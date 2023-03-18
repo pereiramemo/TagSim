@@ -10,7 +10,7 @@ set -o pipefail
 
 show_usage(){
   cat <<EOF
-Usage: ./short_read_labeler.sh <options>
+Usage: ./tagsim.sh <options>
 --help                          print this help
 --config_file CHAR              configuration file (default $(dirname $(readlink -f $0))/conf.sh")
 --clean t|f                     clean all intermediate files (default f)
