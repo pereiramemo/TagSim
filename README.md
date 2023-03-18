@@ -1,7 +1,7 @@
 # TagSim
 ### Tagged short-read sequences simulator
 
-### Usage
+### Usage:
 
 ```
 ./tagsim.sh <options>
@@ -25,5 +25,5 @@
 --verbose t|f                   output verbose (default t)
 ```
 
-#### Workflow:
+### Workflow:
 <img src="figures/TagSim-ENG.png">
