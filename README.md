@@ -1,8 +1,10 @@
 # TagSim
 ### Tagged short-read sequences simulator
 
+### Usage
+
 ```
-Usage: ./tagsim.sh <options>
+./tagsim.sh <options>
 --help                          print this help
 --config_file CHAR              configuration file (default /home/epereira/workspace/repositories/tools/tagsim/code/conf.sh")
 --clean t|f                     clean all intermediate files (default f)
