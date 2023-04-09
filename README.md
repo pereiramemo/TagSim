@@ -13,7 +13,7 @@
 --filtering_evalue NUM          maximum evalue used to filter positive domains - only used when "--filter_by_evalue t" (default 0.1)
 --hmm_file CHAR                 HMM file to annotate reference sequences
 --error_rate NUM                error rate of simulated short read sequences (default 1e-3)
---input_dir CHAR                input CDSs fasta file (.fna)
+--input_dir CHAR                input CDSs fasta file (.fna). All fasta header must start with >lcl|
 --max_evalue                    maximum evalue to consider to filter overlapping hits (default 1)
 --nslots NUM                    number of threads used (default 4)
 --output_dir CHAR               directory to output generated data
