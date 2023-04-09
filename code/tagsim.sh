@@ -19,7 +19,7 @@ Usage: ./tagsim.sh <options>
 --filtering_evalue NUM          maximum evalue used to filter positive domains - only used when "--filter_by_evalue t" (default 0.1)
 --hmm_file CHAR                 HMM file to annotate reference sequences
 --error_rate NUM                error rate of simulated short read sequences (default 1e-3)
---input_dir CHAR                input amino acid fasta file (i.e., .faa)
+--input_dir CHAR                input CDSs fasta file (.fna). All fasta header must start with >lcl|
 --max_evalue                    maximum evalue to consider to filter overlapping hits (default 1)
 --nslots NUM                    number of threads used (default 4)
 --output_dir CHAR               directory to output generated data
@@ -28,7 +28,7 @@ Usage: ./tagsim.sh <options>
 --read_length NUM               comma separated read lengths of simulated short reads (default 100,200,300)
 --slide_window NUM              sliding window to extract short reads (default 30bp)
 --subsample_n                   subsample negative domains n times the number of potential domains (default 1)
---verbose t|f                   output verbose (default t)
+--verbose t|f                   output verbose (default f)
 EOF
 }
 
@@ -340,6 +340,8 @@ else
 }
 fi
 
+export -f handleoutput
+
 if [[ -z "${FILTER_BY_EVALUE}" ]]; then
   FILTER_BY_EVALUE="f"
 fi  
@@ -386,6 +388,10 @@ fi
 
 if [[ -z "${QUERY_FIELD}" ]]; then
   QUERY_FIELD="accession"
+fi
+
+if [[ -z "${READ_LENGTH}" ]]; then
+  READ_LENGTH="100,200,300"
 fi
 
 ###############################################################################
@@ -471,7 +477,7 @@ if [[ $? -ne "0" ]]; then
   echo "mkdir -p ${OUTPUT_DIR}/annot_cds failed"
 fi
 
-env_parallel \
+parallel \
 -j "${NSLOTS}" \
 "${hmmsearch} \
 -E 30 \
@@ -499,7 +505,7 @@ fi
 
 INPUT_FILES=$(ls "${OUTPUT_DIR}/annot_cds/"*".domtblout")
 
-env_parallel \
+parallel \
 -j "${NSLOTS}" \
 "${MODULES}/extract_non_overlapping_seqs.sh \
 --config_file ${CONFIG_FILE} \
@@ -523,7 +529,7 @@ fi
 echo "Extracting negative domains ..." | handleoutput
 INPUT_FILES=$(ls "${OUTPUT_DIR}/annot_cds/"*".domtblout")
 
-env_parallel \
+parallel \
 -j "${NSLOTS}" \
 "${MODULES}/extract_complement_seqs.sh \
 --config_file ${CONFIG_FILE} \
@@ -665,6 +671,8 @@ if [[ "${SUBSAMPLE_N}" -ne 0 ]]; then
 
   echo "Subsamplig negative domain short reads ..." | handleoutput
   
+  export -f subsample_fun
+  
   env_parallel \
   -j "${NSLOTS}" \
   "subsample_fun \
@@ -726,5 +734,5 @@ fi
 # 17. Exit
 ###############################################################################
 
-echo "tagsim.sh exit successfully"
+echo "tagsim.sh exited successfully"
 exit 0
