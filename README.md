@@ -22,7 +22,7 @@
 --read_length NUM               comma separated read lengths of simulated short reads (default 100,200,300)
 --slide_window NUM              sliding window to extract short reads (default 30bp)
 --subsample_n                   subsample negative domains n times the number of potential domains (default 1)
---verbose t|f                   output verbose (default t)
+--verbose t|f                   output verbose (default f)
 ```
 
 ### Workflow:
